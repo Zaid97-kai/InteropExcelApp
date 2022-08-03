@@ -11,9 +11,10 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="11*"></RowDefinition>
         </Grid.RowDefinitions>
-        <UniformGrid Grid.Row="0" Columns="2">
+        <UniformGrid Grid.Row="0" Columns="3">
             <Button x:Name="BnExport" Click="BnExport_Click">Экспорт в Excel</Button>
             <Button x:Name="BnImport" Click="BnImport_Click">Импорт данных</Button>
+            <Button x:Name="BnExportWord" Click="BnExportWord_Click">Экспорт в Word</Button>
         </UniformGrid>
     </Grid>
 </Window>

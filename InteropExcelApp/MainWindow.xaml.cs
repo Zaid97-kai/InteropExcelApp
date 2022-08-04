@@ -13,8 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
 using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
+using System.IO;
+using System.Data.Entity;
 
 namespace InteropExcelApp
 {
@@ -62,7 +65,16 @@ namespace InteropExcelApp
                 usersEntities.SaveChanges();
             }
         }
-
+        private void JsonSerializerMethod()
+        {
+            using (UsersEntities usersEntities = new UsersEntities())
+            {
+                using (FileStream fs = new FileStream("file.json", FileMode.OpenOrCreate))
+                {
+                    JsonSerializer.SerializeAsync(fs, usersEntities.Users);
+                }
+            }
+        }
         private void BnExport_Click(object sender, RoutedEventArgs e)
         {
             List<Student> allStudents;
@@ -151,18 +163,18 @@ namespace InteropExcelApp
                 var app = new Word.Application();
                 Word.Document document = app.Documents.Add();
 
-                foreach (var group in allGroups)
+                foreach (var group in studentsCategories)
                 {
                     Word.Paragraph paragraph = document.Paragraphs.Add();
                     Word.Range range = paragraph.Range;
 
-                    range.Text = Convert.ToString(group.NumberGroup);
-                    paragraph.set_Style("Title");
+                    range.Text = Convert.ToString(allGroups.Where(g => g.Id == group.Key).FirstOrDefault().NumberGroup);
+                    paragraph.set_Style("Заголовок 1");
                     range.InsertParagraphAfter();
 
                     Word.Paragraph tableParagraph = document.Paragraphs.Add();
                     Word.Range tableRange = tableParagraph.Range;
-                    Word.Table studentsTable = document.Tables.Add(tableRange, allGroups.Count() + 1, 3);
+                    Word.Table studentsTable = document.Tables.Add(tableRange, group.Count() + 1, 2); 
                     studentsTable.Borders.InsideLineStyle = studentsTable.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
                     studentsTable.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
@@ -174,22 +186,23 @@ namespace InteropExcelApp
                     studentsTable.Rows[1].Range.Bold = 1;
                     studentsTable.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
 
-                    for (int i = 0; i < allStudents.Count(); i++)
+                    int i = 1;
+                    foreach (var currentStudent in group)
                     {
-                        var currentStudent = allStudents[i];
-                        if (currentStudent.Group.NumberGroup == group.NumberGroup)
-                        {
-                            cellRange = studentsTable.Cell(i + 2, 1).Range;
-                            cellRange.Text = currentStudent.Id.ToString();
+                        cellRange = studentsTable.Cell(i + 1, 1).Range;
+                        cellRange.Text = currentStudent.Id.ToString();
+                        cellRange.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
 
-                            cellRange = studentsTable.Cell(i + 2, 2).Range;
-                            cellRange.Text = currentStudent.Name;
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                        cellRange = studentsTable.Cell(i + 1, 2).Range;
+                        cellRange.Text = currentStudent.Name;
+                        cellRange.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        i++;
                     }
+                    Word.Paragraph countStudentsParagraph = document.Paragraphs.Add();
+                    Word.Range countStudentsRange = countStudentsParagraph.Range;
+                    countStudentsRange.Text = $"Количество студентов в группе - {group.Count()}";
+                    countStudentsRange.Font.Color = Word.WdColor.wdColorDarkRed;
+                    countStudentsRange.InsertParagraphAfter();
                 }
                 app.Visible = true;
             }

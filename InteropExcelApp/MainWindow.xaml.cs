@@ -26,6 +26,8 @@ namespace InteropExcelApp
         public MainWindow()
         {
             InitializeComponent();
+
+            JsonSerializerMethod();
         }
         private void BnImport_Click(object sender, RoutedEventArgs e)
         {
@@ -65,13 +67,33 @@ namespace InteropExcelApp
                 usersEntities.SaveChanges();
             }
         }
-        private void JsonSerializerMethod()
+        private async void JsonSerializerMethod()
         {
-            using (UsersEntities usersEntities = new UsersEntities())
+            using (Entities entities = new Entities())
             {
-                using (FileStream fs = new FileStream("file.json", FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream("3.json", FileMode.OpenOrCreate))
                 {
-                    JsonSerializer.SerializeAsync(fs, usersEntities.Users);
+                    await JsonSerializer.SerializeAsync(fs, entities.Clients);
+                }
+                using (FileStream fs = new FileStream("3.json", FileMode.OpenOrCreate))
+                {
+                    List<Clients> o = await JsonSerializer.DeserializeAsync<List<Clients>>(fs);
+                }
+                using (FileStream fs = new FileStream("4.json", FileMode.OpenOrCreate))
+                {
+                    await JsonSerializer.SerializeAsync(fs, entities.Staffs);
+                }
+                using (FileStream fs = new FileStream("4.json", FileMode.OpenOrCreate))
+                {
+                    List<Staffs> s = await JsonSerializer.DeserializeAsync<List<Staffs>>(fs);
+                }
+                using (FileStream fs = new FileStream("5.json", FileMode.OpenOrCreate))
+                {
+                    await JsonSerializer.SerializeAsync(fs, entities.SecondStaffs);
+                }
+                using (FileStream fs = new FileStream("5.json", FileMode.OpenOrCreate))
+                {
+                    List<SecondStaffs> secondStaffs = await JsonSerializer.DeserializeAsync<List<SecondStaffs>>(fs);
                 }
             }
         }

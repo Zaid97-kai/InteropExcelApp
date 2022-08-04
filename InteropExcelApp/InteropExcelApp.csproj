@@ -57,13 +57,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Clients.cs">
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
+    </Compile>
     <Compile Include="ExampleModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExampleModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ExampleModel1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExampleModel1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExampleModel1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExampleModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExampleModel1.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Group.cs">
       <DependentUpon>ExampleModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Orders.cs">
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SecondStaffs.cs">
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services.cs">
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Staffs.cs">
+      <DependentUpon>ExampleModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="Student.cs">
       <DependentUpon>ExampleModel.tt</DependentUpon>
@@ -118,6 +148,13 @@
     </EntityDeploy>
     <None Include="ExampleModel.edmx.diagram">
       <DependentUpon>ExampleModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="ExampleModel1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ExampleModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ExampleModel1.edmx.diagram">
+      <DependentUpon>ExampleModel1.edmx</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -175,6 +212,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ExampleModel.edmx</DependentUpon>
       <LastGenOutput>ExampleModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="ExampleModel1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ExampleModel1.edmx</DependentUpon>
+      <LastGenOutput>ExampleModel1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ExampleModel1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ExampleModel1.edmx</DependentUpon>
+      <LastGenOutput>ExampleModel1.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
